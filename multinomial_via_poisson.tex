@@ -1,0 +1,299 @@
+% arara: xelatex
+\documentclass[12pt]{article}
+
+% \usepackage{physics}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Overleaf Example},
+    pdfpagemode=FullScreen,
+    }
+
+\usepackage{verse}
+
+\usepackage{tikzducks}
+
+\usepackage{tikz} % картинки в tikz
+\usetikzlibrary{shapes, arrows, positioning}
+\usepackage{microtype} % свешивание пунктуации
+
+\usepackage{array} % для столбцов фиксированной ширины
+
+\usepackage{indentfirst} % отступ в первом параграфе
+
+\usepackage{sectsty} % для центрирования названий частей
+\allsectionsfont{\centering}
+
+\usepackage{amsmath, amsfonts, amssymb} % куча стандартных математических плюшек
+
+\usepackage{comment}
+
+\usepackage[top=2cm, left=1.2cm, right=1.2cm, bottom=2cm]{geometry} % размер текста на странице
+
+\usepackage{lastpage} % чтобы узнать номер последней страницы
+
+\usepackage{enumitem} % дополнительные плюшки для списков
+%  например \begin{enumerate}[resume] позволяет продолжить нумерацию в новом списке
+\usepackage{caption}
+
+\usepackage{url} % to use \url{link to web}
+
+
+
+
+\newcommand{\smallduck}{\begin{tikzpicture}[scale=0.3]
+    \duck[
+        cape=black,
+        hat=black,
+        mask=black
+    ]
+    \end{tikzpicture}}
+
+\usepackage{fancyhdr} % весёлые колонтитулы
+\pagestyle{fancy}
+\lhead{}
+\chead{Мультиномиальная логит-модель и пуассоновский поток}
+\rhead{}
+\lfoot{}
+\cfoot{}
+\rfoot{}
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\usepackage{tcolorbox} % рамочки!
+
+\usepackage{todonotes} % для вставки в документ заметок о том, что осталось сделать
+% \todo{Здесь надо коэффициенты исправить}
+% \missingfigure{Здесь будет Последний день Помпеи}
+% \listoftodos - печатает все поставленные \todo'шки
+
+
+% более красивые таблицы
+\usepackage{booktabs}
+% заповеди из докупентации:
+% 1. Не используйте вертикальные линни
+% 2. Не используйте двойные линии
+% 3. Единицы измерения - в шапку таблицы
+% 4. Не сокращайте .1 вместо 0.1
+% 5. Повторяющееся значение повторяйте, а не говорите "то же"
+
+
+\setcounter{MaxMatrixCols}{20}
+% by crazy default pmatrix supports only 10 cols :)
+
+
+\usepackage{fontspec}
+\usepackage{libertine}
+\usepackage{polyglossia}
+
+
+\usepackage[bibencoding = auto,
+backend = biber,
+sorting = nyt, % name-year-title sorting
+style=authoryear]{biblatex}
+
+\addbibresource{multinomial_via_poisson.bib}
+
+
+\setmainlanguage{russian}
+\setotherlanguages{english}
+
+% download "Linux Libertine" fonts:
+% http://www.linuxlibertine.org/index.php?id=91&L=1
+% \setmainfont{Linux Libertine O} % or Helvetica, Arial, Cambria
+% why do we need \newfontfamily:
+% http://tex.stackexchange.com/questions/91507/
+% \newfontfamily{\cyrillicfonttt}{Linux Libertine O}
+
+\AddEnumerateCounter{\asbuk}{\russian@alph}{щ} % для списков с русскими буквами
+% \setlist[enumerate, 2]{label=\asbuk*),ref=\asbuk*}
+
+%% эконометрические сокращения
+\DeclareMathOperator{\Cov}{\mathbb{C}ov}
+\DeclareMathOperator{\Corr}{\mathbb{C}orr}
+\DeclareMathOperator{\Var}{\mathbb{V}ar}
+\DeclareMathOperator{\col}{col}
+\DeclareMathOperator{\row}{row}
+\DeclareMathOperator{\rank}{rank}
+
+\let\P\relax
+\DeclareMathOperator{\P}{\mathbb{P}}
+
+\DeclareMathOperator{\E}{\mathbb{E}}
+% \DeclareMathOperator{\tr}{trace}
+\DeclareMathOperator{\card}{card}
+\DeclareMathOperator{\mgf}{mgf}
+
+\DeclareMathOperator{\Convex}{Convex}
+\DeclareMathOperator{\plim}{plim}
+
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\scalp}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\cF}{\mathcal{F}}
+
+\newcommand{\nendo}{n_{\text{endo}}}
+\newcommand{\nexo}{n_{\text{exo}}}
+
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\hb}{\hat{\beta}}
+
+\newcommand{\dBern}{\mathrm{Bern}}
+\newcommand{\dPois}{\mathrm{Pois}}
+\newcommand{\dBin}{\mathrm{Bin}}
+\newcommand{\dMult}{\mathrm{Mult}}
+\newcommand{\dGeom}{\mathrm{Geom}}
+\newcommand{\dNHGeom}{\mathrm{NHGeom}}
+\newcommand{\dHGeom}{\mathrm{HGeom}}
+\newcommand{\dDUnif}{\mathrm{DUnif}}
+\newcommand{\dFS}{\mathrm{FS}}
+\newcommand{\dNBin}{\mathrm{NBin}}
+
+\newcommand{\dTri}{\mathrm{Triangle}}
+\newcommand{\dUnif}{\mathrm{Unif}}
+\newcommand{\dU}{\mathrm{U}}
+\newcommand{\dCauchy}{\mathrm{Cauchy}}
+\newcommand{\dN}{\mathcal{N}}
+\newcommand{\dLN}{\mathcal{LN}}
+\newcommand{\dExpo}{\mathrm{Expo}} % o is probably great to avoid confusion with exp function
+\newcommand{\dExp}{\dExpo}
+\newcommand{\dBeta}{\mathrm{Beta}}
+\newcommand{\dGamma}{\mathrm{Gamma}}
+\newcommand{\dWei}{\mathrm{Wei}}
+\newcommand{\dLogistic}{\mathrm{Logistic}}
+\newcommand{\dRayleigh}{\mathrm{Rayleigh}}
+\newcommand{\dPareto}{\mathrm{Pareto}}
+\newcommand{\dGumbel}{\mathrm{Gumbel}}
+
+
+
+
+\begin{document}
+
+
+\begin{verse}
+    \begin{flushright}
+        ...
+    \end{flushright}
+\end{verse}
+
+Цель этой заметки — показать связь мультиномильной модели с пуассоновским потоком, а заодно доказать формулу для вероятностей :)
+
+
+\section*{Равномерное, экспоненциальное и распределение Гумбеля}
+Величина $L$ распределена равномерно на отрезке $[0;1]$. 
+Посмотрим на цепочку 
+\[
+L \overset{h}{\rightarrow} M \overset{h}{\rightarrow} R, \quad h(x) = -\ln x,
+\] 
+где каждая следующая величина получается как минус логарифм предыдущей, $M = -\ln L$, $R = - \ln M$.
+В обратную сторону, $M = \exp(-R)$, $L = \exp(- M)$,
+\[
+    L \overset{g}{\leftarrow} M \overset{g}{\leftarrow} R, \quad g(x) = \exp(-x).
+\]
+Найдём, как меняется функция плотности через дифференциальную форму.
+Стартуем с плотности $f_L(\ell) = 1$ или с формы $f_L(\ell)d\ell = 1\cdot d\ell$.
+И просто подставляем обратное преобразование $\ell = \exp(-m)$ в $f_L(\ell)d\ell$,
+\[
+f_L(\ell)d\ell = 1 \cdot d\ell = 1 \cdot d(\exp(-m)) = -\exp(-m) dm.
+\]
+Отсюда, $f_M(m)=\exp(-m)$, случайная величина $M$ имеет \emph{экспоненциальное распределение} с единичной интенсивностью. 
+Знак минус вовсе не говорит, что плотность отрицательная :) 
+Дело лишь в том, что положительное $d\ell$ соответствует отрицательному $dm$. 
+
+Теперь подставляем обратное преобразование $m = \exp(-r)$ в $f_M(m)dm$,
+\[
+f_M(m)dm = \exp(-m) \cdot dm = \exp(-\exp(-r)) \cdot d(\exp(-r)) = -\exp(-r - \exp(-r)) dr.
+\]
+Замечаем, что функция плотности величины $R$ равна $f_R(r) = \exp(-r - \exp(-r))$.
+Величина $R$ имеет распределение Гумбеля.
+
+Снимем маски с полученной цепочки :)
+\[
+\dUnif[0; 1] \overset{h}{\rightarrow} \dExpo(\lambda = 1) \overset{h}{\rightarrow} \dGumbel, \quad h(x) = -\ln x.
+\]
+
+\section*{Первое событие в конкурирующих потоках}
+
+Представим себе дюжину $3 + 4 + 5 = 12$ независимых пуассоновских потоках единичной интенсивности. 
+На первые три потока поставим букву $A$, на следующие четыре потока — букву $B$, на следующие пять потоков — букву $C$.
+
+Зададимся вопросом, на какую букву придётся самое первое происшествие в этих $12$ потоках?
+В силу симметрии, первое происшествие ложится равновероятно на каждый исходный из дюжины потоков. 
+Поэтому ответ имеет простой вид
+\[
+\P(A) = \frac{3}{3 + 4 + 5}, \quad \P(B) = \frac{4}{3 + 4 + 5}, \quad \P(C) = \frac{5}{3 + 4 + 5}.
+\]
+
+Теперь обратим внимание, что $A$-потоки можно сложить и получить один поток с интенсивностью три
+происшествия в час, $B$-потоки можно сложить в один поток с интенсивностью четыре,
+и $C$-потоки можно сложить в один поток с интенсивностью пять. 
+Свойство суммирования для пуассоновского потока можно доказать, например, сложив независимые пуассоновские случайные величины.
+Также можно построить доказательство, опираясь на аксиомы пуассоновского потока и математическое ожидание числа событий за единицу времени.
+
+И мы видим следующий факт:
+
+\begin{tcolorbox}[colback=yellow!50!red!25!white]
+Если $k$ независимых пуассоновских потоков имеют интенсивности $\lambda_1$, $\lambda_2$, \dots, $\lambda_k$,
+а $T_j$ — время первого происшествия в $j$-м потоке, то
+\[
+\P(T_j = \min\{T_1, T_2, \dots, T_k\}) = \frac{\lambda_j}{\lambda_1 + \lambda_2 + \dots + \lambda_k}.
+\]
+Другими словами, вероятность того, что на $j$-й поток придётся первое происшествие пропорциональна его интенсивности.
+\end{tcolorbox}
+    
+
+\section*{Мультиномиальная логит-модель}
+
+Рассмотрим некоторого индивида и три альтернативы, $A$, $B$ и $C$. 
+Представим себе мысленный эксперимент. 
+Индивид изготавливает три кастрюли в которые капли дождя попадают с интенсивностями $\lambda_A = \exp(V_A)$, 
+$\lambda_B = \exp(V_B)$, $\lambda_C = \exp(V_C)$.
+Можно считать, что $\lambda_j$ — это площадь поверхности кастрюли, а индивид выберет ту альтернативу, куда попадёт первая капля дождя.
+
+Поток дождя, попадающий в каждую из кастрюль — это пуассоновский поток :)
+
+Вероятности выбора альтернатив равны 
+\[
+\P(A) = \frac{\lambda_A}{\lambda_A + \lambda_B + \lambda_C}, \dots
+\]
+Время попадания первой капли в $j$-ю кастрюлю $T_j$ имеет экспоненциальное распределение с параметром $\lambda_j$.
+Отсюда, $\lambda_j T_j \sim \dExpo(1)$ и $u_j = -\ln (\lambda_j T_j) \sim \dGumbel$,
+\[
+u_j = -V_j - \ln T_j \sim \dGumbel
+\]
+Назовём величину $y_j^* = -\ln T_j$ полезностью от альтернативы $j$,
+\[
+y_j^* = -\ln T_j = V_j + u_j
+\]
+Индивид выбирает ту альтернативу, у которой полезность $y_j^*$ больше!
+По-доказанному,
+\begin{align*}
+\P(y_j^* = \max\{y_1^*, \dots, y_k^*\}) = \P(T_j = \min\{T_1, T_2, \dots, T_k\}) = \\
+= \frac{\lambda_j}{\lambda_1 + \lambda_2 + \dots + \lambda_k} = 
+\frac{\exp(V_j)}{\exp(V_1) + \exp(V_2) + \dots + \exp(V_k)}
+\end{align*}
+
+\section*{Классическое доказательство}
+
+Для полноты картины приведём классическое доказательство формулы для вероятностей в мультиномиальной логит-модели напрямую из распределения Гумбеля. 
+...
+
+
+
+\section{Источники мудрости}
+
+\printbibliography
+
+\end{document}
+
