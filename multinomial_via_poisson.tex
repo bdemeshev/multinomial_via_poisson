@@ -223,6 +223,93 @@ f_M(m)dm = \exp(-m) \cdot dm = \exp(-\exp(-r)) \cdot d(\exp(-r)) = -\exp(-r - \e
 \dUnif[0; 1] \overset{h}{\rightarrow} \dExpo(\lambda = 1) \overset{h}{\rightarrow} \dGumbel, \quad h(x) = -\ln x.
 \]
 
+\section*{Мультиномиальная модель на трёх языках}
+
+Изложим классическую мультиномиальную модель на примере трёх альтернатив на языках трёх распределений.
+
+С помощью распределения Гумбеля:
+\[
+\begin{cases}
+u_{ij} \sim \dGumbel \\
+y_{ia}^* = x_i^T \beta_a + u_{ia}, \text{ где } \beta_a = 0 \\
+y_{ib}^* = x_i^T \beta_b + u_{ib} \\
+y_{ic}^* = x_i^T \beta_c + u_{ic} \\
+y_i = \begin{cases}
+a, \text{ если } y_{ia}^* = \max\{y_{ia}^*, y_{ib}^*, y_{ic}^*\} \\
+b, \text{ если } y_{ib}^* = \max\{y_{ia}^*, y_{ib}^*, y_{ic}^*\} \\
+c, \text{ если } y_{ic}^* = \max\{y_{ia}^*, y_{ib}^*, y_{ic}^*\} \\
+\end{cases}
+\end{cases}
+\]
+
+
+С помощью экспоненциального распределения, $v_{ij} = \exp(-u_{ij})$, $T_{ij} = \exp(-y_{ij}^*)$.
+\[
+\begin{cases}
+v_{ij} \sim \dExpo(\lambda=1) \\
+T_{ia} = v_{ia} / \exp(x_i^T \beta_a), \text{ где } \beta_a = 0 \\
+T_{ib} = v_{ib} / \exp(x_i^T \beta_b)\\
+T_{ic} = v_{ic} / \exp(x_i^T \beta_c)\\
+y_i = \begin{cases}
+a, \text{ если } T_{ia} = \min\{T_{ia}, T_{ib}, T_{ic}\} \\
+b, \text{ если } T_{ib} = \min\{T_{ia}, T_{ib}, T_{ic}\} \\
+c, \text{ если } T_{ic} = \min\{T_{ia}, T_{ib}, T_{ic}\} \\
+\end{cases}
+\end{cases}
+\]
+Замечаем, что в экспоненциальном изложении мультиномиальной логит-модели $T_{ij} \sim \dExpo(\lambda = \exp(x_i^T \beta_j))$.
+
+
+С помощью равномерного распределения, $w_{ij} = \exp(-v_{ij})$, $S_{ij} = \exp(-T_{ij})$.
+\[
+\begin{cases}
+w_{ij} \sim \dUnif[0, 1] \\
+S_{ia} = w_{ia}^{1/\exp(x_i^T \beta_a)}, \text{ где } \beta_a = 0 \\
+S_{ib} = w_{ib}^{1/\exp(x_i^T \beta_b)} \\
+S_{ic} = w_{ic}^{1/\exp(x_i^T \beta_c)} \\
+y_i = \begin{cases}
+a, \text{ если } S_{ia} = \max\{S_{ia}, S_{ib}, S_{ic}\} \\
+b, \text{ если } S_{ib} = \max\{S_{ia}, S_{ib}, S_{ic}\} \\
+c, \text{ если } S_{ic} = \max\{S_{ia}, S_{ib}, S_{ic}\} \\
+\end{cases} \\
+\end{cases}
+\]
+
+\section*{Бинарная логит-модель с помощью Гумбеля и логистического}
+
+Бинарную логит модель обычно рассказывают в терминах логистического распределения:
+\[
+\begin{cases}
+u_i \sim \dLogistic \\
+y_i^* = x_i^T \beta + u_i \\
+y_i =  \begin{cases}
+0, \text{ если } y_i^* < 0 \\
+1, \text{ если } y_i^* \geq 0 \\
+\end{cases}
+\end{cases}
+\]
+
+Можно изложить её и в терминах Гумбеля
+\[
+\begin{cases}
+u_{ij} \sim \dGumbel \\
+y_{ia}^* = x_i^T \beta_a + u_{ia}, \text{ где } \beta_a = 0 \\
+y_{ib}^* = x_i^T \beta_b + u_{ib} \\
+y_i = \begin{cases}
+a, \text{ если } y_{ia}^* = \max\{y_{ia}^*, y_{ib}^*\} \\
+b, \text{ если } y_{ib}^* = \max\{y_{ia}^*, y_{ib}^*\} \\
+\end{cases}
+\end{cases}
+\]
+Замечаем, что изложение в терминах Гумбеля переводится в классическое с логистическим распределением связкой
+\[
+y_i^* =y_{ib}^* - y_{ia}^* =  x_i^T \beta_b + u_{ib} - u_{ia}.
+\]
+
+В узких кругах широко известно, что разница двух независимых распределений Гумбеля $u_{ib} - u_{ia}$ имеет логистическое распределения.
+Тут пруф :)
+
+
 \section*{Первое событие в конкурирующих потоках}
 
 Представим себе дюжину $3 + 4 + 5 = 12$ независимых пуассоновских потоках единичной интенсивности. 
